@@ -1,0 +1,120 @@
+/* Footer Styles */
+.footer {
+  @apply bg-gray-900 text-white;
+}
+
+.footer-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16;
+}
+
+.footer-grid {
+  @apply grid md:grid-cols-4 gap-8;
+}
+
+.footer-brand {
+  @apply space-y-4;
+}
+
+.footer-logo {
+  @apply flex items-center space-x-2;
+}
+
+.footer-logo-icon {
+  @apply h-8 w-8 text-blue-400;
+}
+
+.footer-logo-text {
+  @apply text-xl font-bold;
+}
+
+.footer-description {
+  @apply text-gray-400 leading-relaxed;
+}
+
+.footer-social {
+  @apply flex space-x-4;
+}
+
+.footer-social-link {
+  @apply text-gray-400 transition-colors;
+}
+
+.footer-social-link-facebook {
+  @apply hover:text-blue-400;
+}
+
+.footer-social-link-twitter {
+  @apply hover:text-blue-400;
+}
+
+.footer-social-link-instagram {
+  @apply hover:text-orange-400;
+}
+
+.footer-social-link-linkedin {
+  @apply hover:text-blue-400;
+}
+
+.footer-social-icon {
+  @apply h-5 w-5;
+}
+
+.footer-section {
+  /* Base section styles */
+}
+
+.footer-section-title {
+  @apply text-lg font-semibold mb-4;
+}
+
+.footer-section-list {
+  @apply space-y-3;
+}
+
+.footer-section-link {
+  @apply text-gray-400 hover:text-white transition-colors;
+}
+
+.footer-contact {
+  /* Contact section specific styles */
+}
+
+.footer-contact-list {
+  @apply space-y-3;
+}
+
+.footer-contact-item {
+  @apply flex items-center space-x-3;
+}
+
+.footer-contact-icon-blue {
+  @apply h-5 w-5 text-blue-400;
+}
+
+.footer-contact-icon-orange {
+  @apply h-5 w-5 text-orange-400;
+}
+
+.footer-contact-text {
+  @apply text-gray-400;
+}
+
+.footer-bottom {
+  @apply border-t border-gray-800 mt-12 pt-8;
+}
+
+.footer-bottom-content {
+  @apply flex flex-col md:flex-row justify-between items-center;
+}
+
+.footer-copyright {
+  @apply text-gray-400 text-sm;
+}
+
+.footer-legal {
+  @apply flex space-x-6 mt-4 md:mt-0;
+}
+
+.footer-legal-link {
+  @apply text-gray-400 hover:text-white text-sm transition-colors;
+}

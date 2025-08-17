@@ -1,0 +1,52 @@
+/* Features Section Styles */
+.features-section {
+  @apply py-24 bg-white;
+}
+
+.features-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.features-header {
+  @apply text-center mb-16;
+}
+
+.features-title {
+  @apply text-4xl lg:text-5xl font-bold text-gray-900 mb-4;
+}
+
+.features-description {
+  @apply text-xl text-gray-600 max-w-3xl mx-auto;
+}
+
+.features-grid {
+  @apply grid md:grid-cols-2 lg:grid-cols-3 gap-8;
+}
+
+.feature-card {
+  @apply p-8 bg-white rounded-2xl border border-gray-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-2;
+}
+
+.feature-icon {
+  @apply inline-flex p-3 rounded-xl mb-6 transition-all duration-300;
+}
+
+.feature-icon-blue {
+  @apply bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white;
+}
+
+.feature-icon-orange {
+  @apply bg-orange-100 text-orange-600 group-hover:bg-orange-500 group-hover:text-white;
+}
+
+.feature-icon-element {
+  @apply h-6 w-6;
+}
+
+.feature-title {
+  @apply text-xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors;
+}
+
+.feature-description {
+  @apply text-gray-600 leading-relaxed;
+}

@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  chatai-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: chatai-service
+    ports:
+      - "8081:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SERVER_PORT=8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/chatai_db
+      - SPRING_DATASOURCE_USERNAME=chatai_user
+      - SPRING_DATASOURCE_PASSWORD=chatai_password
+      - APP_AUTH_SERVICE_URL=http://auth-service:8080
+      - APP_AI_OLLAMA_BASE_URL=http://ollama:11434
+      - APP_AI_OLLAMA_MODEL=llama3
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW_SQL=false
+      - LOGGING_LEVEL_CI_HARDWORK_CHATAI=INFO
+    depends_on:
+      - postgres
+      - ollama
+    restart: unless-stopped
+    networks:
+      - chatai-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: chatai-postgres
+    environment:
+      - POSTGRES_DB=chatai_db
+      - POSTGRES_USER=chatai_user
+      - POSTGRES_PASSWORD=chatai_password
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    networks:
+      - chatai-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U chatai_user -d chatai_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: chatai-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    networks:
+      - chatai-network
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+volumes:
+  postgres_data:
+    driver: local
+  ollama_data:
+    driver: local
+
+networks:
+  chatai-network:
+    driver: bridge

@@ -1,0 +1,39 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+  datasource:
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 10
+  cache:
+    caffeine:
+      spec: maximumSize=5000,expireAfterWrite=30m
+
+server:
+  servlet:
+    context-path: /api
+
+logging:
+  level:
+    ci.hardwork.chatai: WARN
+    org.springframework.ai: WARN
+    org.springframework.security: WARN
+  file:
+    name: /var/log/chat-ai.log
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics
+
+app:
+  ai:
+    conversation:
+      max-history: 100  # More history for prod
+      auto-cleanup-days: 60
+  rate-limit:
+    requests-per-minute: 30  # Stricter for prod
+    burst-capacity: 5

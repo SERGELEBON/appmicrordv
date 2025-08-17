@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/chat_ai_db_dev
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+logging:
+  level:
+    ci.hardwork.chatai: DEBUG
+    org.springframework.ai: DEBUG
+    org.springframework.security: DEBUG
+
+app:
+  ai:
+    conversation:
+      max-history: 20  # Smaller history for dev
+      auto-cleanup-days: 7
+  rate-limit:
+    requests-per-minute: 120  # More lenient for dev
+    burst-capacity: 20

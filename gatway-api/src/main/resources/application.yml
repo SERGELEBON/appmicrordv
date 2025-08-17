@@ -1,0 +1,110 @@
+server:
+  port: 8080
+
+  spring:
+  application:
+    name: gatway-api
+  cloud:
+    gateway:
+      routes:
+        # Routes publiques (auth service)
+        - id: auth-login
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/auth/login, /api/auth/register, /api/auth/refresh-token
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+        
+        # Routes sécurisées auth-service
+        - id: auth-service-secured
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - JwtAuthenticationFilter
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 50
+                redis-rate-limiter.burstCapacity: 100
+        
+        # ChatAI service (sécurisé)
+        - id: chatai-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/chat/**
+          filters:
+            - JwtAuthenticationFilter
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 20
+                redis-rate-limiter.burstCapacity: 50
+        
+        # Gestion RDV service (sécurisé)
+        - id: gestion-rdv-service
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/rdv/**, /api/patients/**, /api/medecins/**, /api/planning/**
+          filters:
+            - JwtAuthenticationFilter
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 30
+                redis-rate-limiter.burstCapacity: 60
+      
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+        - name: Retry
+          args:
+            retries: 3
+            methods: GET,POST
+        
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: 
+              - "http://localhost:3000"
+              - "http://localhost:4200" 
+              - "https://your-frontend-domain.com"
+            allowedMethods: 
+              - GET
+              - POST
+              - PUT
+              - PATCH
+              - DELETE
+              - OPTIONS
+            allowedHeaders: 
+              - "*"
+            allowCredentials: true
+            maxAge: 3600
+
+# Configuration JWT
+jwt:
+  secret: ${JWT_SECRET:bXlTZWNyZXRLZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTA=}
+  
+# Configuration rate limiting
+spring:
+  redis:
+  host: ${REDIS_HOST:localhost}
+  port: ${REDIS_PORT:6379}
+  password: ${REDIS_PASSWORD:}
+
+# Logging
+logging:
+  level:
+    ci.hardwork.gatwayapi: INFO
+    org.springframework.cloud.gateway: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - [%thread] %-5level %logger{36} - %msg%n"
+
+# Management endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,gateway
+  endpoint:
+    health:
+      show-details: when-authorized

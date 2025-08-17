@@ -1,0 +1,49 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auth_db_dev
+    username: postgres
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  security:
+    user:
+      password: admin
+  # Configuration email pour développement (console)
+  mail:
+    host: localhost
+    port: 1025
+    username: test
+    password: test
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+        debug: true
+
+logging:
+  level:
+    ci.hardwork.authservice: DEBUG
+    org.springframework.security: DEBUG
+
+app:
+  jwt:
+    expiration: 3600000 # 1 hour for development
+  mail:
+    from: noreply@rdvchezdoc.com
+  frontend:
+    url: http://localhost:3000
+  twilio:
+    account-sid: ${TWILIO_ACCOUNT_SID:AC62c6e750a6aac514d8d1e5c9451afd18}
+
+    auth-token: ${TWILIO_AUTH_TOKEN:e0fd4998277eeae8f579e77373eccbcc}
+    phone-number: ${TWILIO_PHONE_NUMBER:+1234567890}
+    verify-service-sid: ${TWILIO_VERIFY_SERVICE_SID:VAxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+    # SendGrid configuration for email via Twilio
+    sendgrid:
+      api-key: ${SENDGRID_API_KEY:SG.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+      from-email: ${SENDGRID_FROM_EMAIL:noreply@rdvchezdoc.com}
+      from-name: ${SENDGRID_FROM_NAME:RDVCHEZDOC}

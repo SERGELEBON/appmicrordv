@@ -1,0 +1,50 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: false
+  
+  h2:
+    console:
+      enabled: true
+  
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        options:
+          model: llama3
+          temperature: 0.7
+          max-tokens: 2000
+
+app:
+  auth-service:
+    url: http://localhost:8080
+  rate-limit:
+    requests-per-minute: 60
+    burst-capacity: 10
+  ai:
+    ollama:
+      model: llama3
+      chat:
+        options:
+          temperature: 0.7
+          max-tokens: 2000
+    conversation:
+      max-history: 50
+
+logging:
+  level:
+    ci.hardwork.chatai: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate: WARN

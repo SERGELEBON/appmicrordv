@@ -1,0 +1,124 @@
+/* Login Page Styles */
+.login-page {
+  @apply min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8;
+}
+
+.login-container {
+  @apply max-w-md w-full space-y-8;
+}
+
+.login-header {
+  @apply text-center;
+}
+
+.login-logo {
+  @apply inline-flex items-center space-x-2 mb-6;
+}
+
+.login-logo-icon {
+  @apply h-10 w-10 text-blue-600;
+}
+
+.login-logo-text {
+  @apply text-2xl font-bold text-gray-900;
+}
+
+.login-title {
+  @apply text-3xl font-bold text-gray-900;
+}
+
+.login-subtitle {
+  @apply mt-2 text-gray-600;
+}
+
+.login-form-container {
+  @apply bg-white py-8 px-6 shadow-xl rounded-2xl border border-gray-200;
+}
+
+.login-form {
+  @apply space-y-6;
+}
+
+.login-field {
+  /* Base field styles */
+}
+
+.login-label {
+  @apply block text-sm font-medium text-gray-700 mb-2;
+}
+
+.login-input {
+  @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all;
+}
+
+.login-input-with-icon {
+  @apply w-full pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all;
+}
+
+.login-input-with-left-icon {
+  @apply pl-12;
+}
+
+.login-input-with-right-icon {
+  @apply pr-12;
+}
+
+.login-input-icon-left {
+  @apply absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400;
+}
+
+.login-input-icon-right {
+  @apply absolute right-3 top-1/2 transform -translate-y-1/2;
+}
+
+.login-password-toggle {
+  @apply h-5 w-5 text-gray-400;
+}
+
+.login-remember-forgot {
+  @apply flex items-center justify-between;
+}
+
+.login-remember {
+  @apply flex items-center;
+}
+
+.login-checkbox {
+  @apply h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded;
+}
+
+.login-checkbox-label {
+  @apply ml-2 text-sm text-gray-700;
+}
+
+.login-forgot-password {
+  @apply text-sm text-blue-600 hover:text-blue-500;
+}
+
+.login-submit-button {
+  @apply w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors font-semibold text-lg;
+}
+
+.login-toggle-container {
+  @apply mt-6 text-center;
+}
+
+.login-toggle-text {
+  @apply text-gray-600;
+}
+
+.login-toggle-button {
+  @apply ml-2 text-blue-600 hover:text-blue-500 font-medium;
+}
+
+.login-terms {
+  @apply mt-6 text-xs text-gray-500 text-center;
+}
+
+.login-terms-link {
+  @apply text-blue-600 hover:underline;
+}
+
+.login-error {
+  @apply bg-red-50 border border-red-300 text-red-800 px-4 py-3 rounded-lg mb-4;
+}

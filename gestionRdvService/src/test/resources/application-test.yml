@@ -1,0 +1,70 @@
+spring:
+  application:
+    name: gestion-rdv-service-test
+  
+  # Configuration H2 pour les tests unitaires
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  
+  h2:
+    console:
+      enabled: true
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+  
+  # Désactiver la sécurité pour les tests
+  security:
+    enabled: false
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+
+# Configuration des logs pour les tests
+logging:
+  level:
+    ci.hardwork.gestionrdvservice: DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+# Configuration de test pour l'application
+app:
+  auth:
+    service-url: http://localhost:8081/api
+  rdv:
+    duree-consultation-defaut: 30
+    rappel-heures-avant: 24
+    annulation-heures-avant: 24
+  cors:
+    allowed-origins: http://localhost:3000
+
+# Désactiver Swagger pour les tests
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+# Configuration des endpoints de management pour les tests
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always

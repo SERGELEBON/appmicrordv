@@ -1,0 +1,215 @@
+.registration-confirmation-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.confirmation-container {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.confirmation-header {
+  margin-bottom: 2rem;
+}
+
+.confirmation-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: #667eea;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.confirmation-logo-icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.confirmation-content {
+  text-align: center;
+}
+
+.confirmation-icon {
+  margin-bottom: 1.5rem;
+}
+
+.success-icon {
+  width: 4rem;
+  height: 4rem;
+  color: #10b981;
+  margin: 0 auto;
+}
+
+.confirmation-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.confirmation-greeting {
+  font-size: 1.125rem;
+  color: #6b7280;
+  margin-bottom: 2rem;
+}
+
+.doctor-validation-info,
+.patient-confirmation-info {
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.info-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.info-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #667eea;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+}
+
+.info-card h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 0.5rem 0;
+}
+
+.info-card p {
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.next-steps {
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.next-steps h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #92400e;
+  margin: 0 0 1rem 0;
+}
+
+.next-steps ul {
+  color: #92400e;
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.next-steps li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.confirmation-actions {
+  margin-bottom: 2rem;
+}
+
+.doctor-actions,
+.patient-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
+}
+
+.btn-primary {
+  background: #667eea;
+  color: white;
+  border: 2px solid #667eea;
+}
+
+.btn-primary:hover {
+  background: #5a67d8;
+  border-color: #5a67d8;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #667eea;
+  border: 2px solid #667eea;
+}
+
+.btn-secondary:hover {
+  background: #667eea;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.support-info {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.support-info a {
+  color: #667eea;
+  text-decoration: none;
+}
+
+.support-info a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .confirmation-container {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .confirmation-title {
+    font-size: 1.5rem;
+  }
+  
+  .doctor-actions,
+  .patient-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    max-width: 300px;
+  }
+}

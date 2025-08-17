@@ -1,0 +1,117 @@
+/* Navbar Styles */
+.navbar {
+  @apply bg-white shadow-lg sticky top-0 z-50;
+}
+
+.navbar-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.navbar-content {
+  @apply flex justify-between items-center h-16;
+}
+
+.navbar-logo {
+  @apply flex items-center space-x-2;
+}
+
+.navbar-logo-icon {
+  @apply h-8 w-8 text-blue-600;
+}
+
+.navbar-logo-text {
+  @apply text-xl font-bold text-gray-900;
+}
+
+.navbar-desktop {
+  @apply hidden md:flex items-center space-x-8;
+}
+
+.navbar-link {
+  @apply px-3 py-2 text-sm font-medium transition-colors;
+}
+
+.navbar-link-active {
+  @apply text-blue-600 border-b-2 border-blue-600;
+}
+
+.navbar-link-inactive {
+  @apply text-gray-700 hover:text-blue-600;
+}
+
+.navbar-button-login {
+  @apply flex items-center space-x-1 px-4 py-2 text-sm font-medium rounded-md transition-colors;
+}
+
+.navbar-button-login-active {
+  @apply bg-blue-600 text-white;
+}
+
+.navbar-button-login-inactive {
+  @apply text-blue-600 border border-blue-600 hover:bg-blue-50;
+}
+
+.navbar-button-add {
+  @apply flex items-center space-x-1 px-4 py-2 text-sm font-medium rounded-md transition-colors;
+}
+
+.navbar-button-add-active {
+  @apply bg-orange-500 text-white;
+}
+
+.navbar-button-add-inactive {
+  @apply bg-orange-500 text-white hover:bg-orange-600;
+}
+
+.navbar-mobile-button {
+  @apply md:hidden p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100;
+}
+
+.navbar-mobile-menu {
+  @apply md:hidden px-2 pt-2 pb-3 space-y-1 bg-white border-t;
+}
+
+.navbar-mobile-link {
+  @apply block px-3 py-2 text-base font-medium rounded-md;
+}
+
+.navbar-mobile-link-active {
+  @apply text-blue-600 bg-blue-50;
+}
+
+.navbar-mobile-link-inactive {
+  @apply text-gray-700 hover:text-blue-600 hover:bg-gray-50;
+}
+
+.navbar-mobile-button-login {
+  @apply flex items-center space-x-2 px-3 py-2 text-base font-medium text-blue-600 hover:bg-blue-50 rounded-md;
+}
+
+.navbar-mobile-button-add {
+  @apply flex items-center space-x-2 px-3 py-2 text-base font-medium bg-orange-500 text-white hover:bg-orange-600 rounded-md;
+}
+
+/* User menu styles */
+.navbar-user-menu {
+  @apply flex items-center space-x-4;
+}
+
+.navbar-user-name {
+  @apply text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors cursor-pointer flex items-center space-x-2 no-underline;
+}
+
+.navbar-button-logout {
+  @apply flex items-center space-x-1 px-3 py-1.5 text-sm font-medium text-red-600 border border-red-600 rounded-md hover:bg-red-50 transition-colors;
+}
+
+.navbar-mobile-user {
+  @apply px-3 py-2 space-y-2;
+}
+
+.navbar-mobile-user-name {
+  @apply block text-base font-medium text-gray-700 hover:text-blue-600 transition-colors no-underline flex items-center space-x-2;
+}
+
+.navbar-mobile-button-logout {
+  @apply flex items-center space-x-2 px-3 py-2 text-base font-medium text-red-600 hover:bg-red-50 rounded-md;
+}

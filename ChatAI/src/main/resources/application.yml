@@ -1,0 +1,114 @@
+spring:
+  application:
+    name: chat-ai
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/chat_ai_db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 10
+      minimum-idle: 5
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:update}
+    show-sql: ${JPA_SHOW_SQL:false}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  security:
+    user:
+      password: ${DEFAULT_ADMIN_PASSWORD:admin123}
+  cache:
+    type: ${CACHE_TYPE:caffeine}
+    caffeine:
+      spec: maximumSize=1000,expireAfterWrite=10m
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      timeout: 2000ms
+      jedis:
+        pool:
+          max-active: 10
+          max-idle: 5
+          min-idle: 2
+
+server:
+  port: ${PORT:8082}
+  servlet:
+    context-path: ${CONTEXT_PATH:/api}
+  error:
+    include-message: always
+    include-binding-errors: always
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+logging:
+  level:
+    ci.hardwork.chatai: ${LOG_LEVEL:INFO}
+    org.springframework.security: ${SECURITY_LOG_LEVEL:INFO}
+    org.springframework.ai: ${AI_LOG_LEVEL:INFO}
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+spring:
+  ai:
+    ollama:
+      base-url: ${OLLAMA_BASE_URL:http://ollama:11434}
+      chat:
+        options:
+          model: ${OLLAMA_MODEL:llama3}
+          temperature: ${AI_TEMPERATURE:0.7}
+          top-p: ${AI_TOP_P:0.9}
+          max-tokens: ${AI_MAX_TOKENS:2000}
+
+app:
+  auth:
+    service-url: ${AUTH_SERVICE_URL:http://localhost:8081/api}
+    validation-endpoint: ${AUTH_VALIDATION_ENDPOINT:/auth/validate}
+    fallback-enabled: ${AUTH_FALLBACK_ENABLED:true}
+  cache:
+    redis:
+      enabled: ${REDIS_CACHE_ENABLED:false}
+  ai:
+    ollama:
+      base-url: ${OLLAMA_BASE_URL:http://ollama:11434}
+      model: ${OLLAMA_MODEL:llama3}
+      chat:
+        options:
+          temperature: ${AI_TEMPERATURE:0.7}
+          top-p: ${AI_TOP_P:0.9}
+          max-tokens: ${AI_MAX_TOKENS:2000}
+      timeout: ${AI_TIMEOUT:60s}
+    conversation:
+      max-history: ${MAX_CONVERSATION_HISTORY:50}
+      auto-cleanup-days: ${CONVERSATION_CLEANUP_DAYS:30}
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:3000,http://localhost:4200}
+  rate-limit:
+    requests-per-minute: ${RATE_LIMIT_RPM:60}
+    burst-capacity: ${RATE_LIMIT_BURST:10}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+
+
