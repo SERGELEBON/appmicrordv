@@ -2,11 +2,20 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/chat_ai_db_dev
     username: postgres
-    password: postgres
+    password: password
   jpa:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2000ms
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
 
 logging:
   level:

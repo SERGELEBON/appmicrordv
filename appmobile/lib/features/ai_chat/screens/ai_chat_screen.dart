@@ -84,21 +84,28 @@ class _AIChatScreenState extends ConsumerState<AIChatScreen> {
                 ),
               ),
             
-            // Liste des messages
+            // Liste des messages optimisée
             if (chatState.messages.isNotEmpty)
               Expanded(
                 child: ListView.builder(
                   controller: _scrollController,
                   padding: ResponsiveUtils.getResponsivePadding(context),
                   itemCount: chatState.messages.length,
+                  // Optimisations de performance critiques
+                  addAutomaticKeepAlives: false, // Évite de garder les widgets en mémoire
+                  addRepaintBoundaries: false,   // Évite les repaint boundaries automatiques
+                  cacheExtent: 200,             // Limite le cache à 200px pour économiser la mémoire
                   itemBuilder: (context, index) {
                     final message = chatState.messages[index];
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: AppTheme.spacingMd),
-                      child: ChatMessageWidget(
-                        message: message,
-                        onSpecialtyTap: (specialty) => _handleSpecialtyTap(specialty),
-                        onBookAppointment: () => _navigateToBookAppointment(),
+                    return RepaintBoundary(
+                      key: ValueKey(message.id), // Clé stable pour les optimisations
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: AppTheme.spacingMd),
+                        child: ChatMessageWidget(
+                          message: message,
+                          onSpecialtyTap: (specialty) => _handleSpecialtyTap(specialty),
+                          onBookAppointment: () => _navigateToBookAppointment(),
+                        ),
                       ),
                     );
                   },

@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../models/user.dart';
 import '../services/auth_service.dart';
 import '../services/api_service.dart';
+import '../services/mock_service.dart';
 import '../constants/app_constants.dart';
 import 'dart:convert';
 
@@ -86,27 +87,53 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(isLoading: true, error: null);
     
     try {
-      final request = LoginRequest(email: email, password: password);
-      final response = await _authService.login(request);
+      Map<String, dynamic> response;
       
-      await _apiService.setAuthToken(response.accessToken);
-      await _apiService.setRefreshToken(response.refreshToken);
-      await _storage.write(
-        key: AppConstants.userDataKey,
-        value: json.encode(response.user.toJson()),
-      );
-      
-      state = state.copyWith(
-        user: response.user,
-        isAuthenticated: true,
-        isLoading: false,
-      );
-      
-      return true;
+      // Utiliser les mocks en mode développement si pas de backend
+      if (AppConstants.useMockData) {
+        response = await MockService.mockLogin(email, password);
+        
+        await _storage.write(key: AppConstants.tokenKey, value: response['accessToken']);
+        await _storage.write(key: AppConstants.refreshTokenKey, value: response['refreshToken']);
+        await _storage.write(
+          key: AppConstants.userDataKey,
+          value: json.encode(response['user']),
+        );
+        
+        final user = User.fromJson(response['user']);
+        state = state.copyWith(
+          user: user,
+          isAuthenticated: true,
+          isLoading: false,
+        );
+        
+        return true;
+      } else {
+        // Utiliser l'API réelle
+        final request = LoginRequest(email: email, password: password);
+        final authResponse = await _authService.login(request);
+        
+        await _apiService.setAuthToken(authResponse.accessToken);
+        await _apiService.setRefreshToken(authResponse.refreshToken);
+        await _storage.write(
+          key: AppConstants.userDataKey,
+          value: json.encode(authResponse.user.toJson()),
+        );
+        
+        state = state.copyWith(
+          user: authResponse.user,
+          isAuthenticated: true,
+          isLoading: false,
+        );
+        
+        return true;
+      }
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
-        error: 'Email ou mot de passe incorrect',
+        error: AppConstants.useMockData 
+          ? 'Utilisez: patient@test.fr / test123 ou docteur@test.fr / test123'
+          : 'Email ou mot de passe incorrect',
       );
       return false;
     }

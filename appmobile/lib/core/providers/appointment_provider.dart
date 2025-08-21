@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/appointment.dart';
 import '../services/appointment_service.dart';
+import '../services/mock_service.dart';
+import '../constants/app_constants.dart';
 import 'auth_provider.dart';
 
 final appointmentServiceProvider = Provider<AppointmentService>((ref) {
@@ -79,11 +81,19 @@ class AppointmentsNotifier extends StateNotifier<AppointmentsState> {
 
   AppointmentsNotifier(this._appointmentService) : super(const AppointmentsState());
 
-  Future<void> loadAppointments() async {
+  Future<void> loadAppointments({bool forceRefresh = false}) async {
     state = state.copyWith(isLoading: true, error: null);
     
     try {
-      final appointments = await _appointmentService.getAppointments();
+      List<Appointment> appointments;
+      
+      if (AppConstants.useMockData) {
+        appointments = await MockService.mockGetAppointments();
+      } else {
+        // Note: forceRefresh ignoré car l'API ne le supporte pas encore
+        appointments = await _appointmentService.getAppointments();
+      }
+      
       state = state.copyWith(appointments: appointments, isLoading: false);
     } catch (e) {
       state = state.copyWith(
@@ -154,7 +164,14 @@ class DoctorsNotifier extends StateNotifier<DoctorsState> {
     state = state.copyWith(isLoading: true, error: null);
     
     try {
-      final doctors = await _appointmentService.getDoctors();
+      List<Doctor> doctors;
+      
+      if (AppConstants.useMockData) {
+        doctors = await MockService.mockGetDoctors();
+      } else {
+        doctors = await _appointmentService.getDoctors();
+      }
+      
       state = state.copyWith(doctors: doctors, isLoading: false);
     } catch (e) {
       state = state.copyWith(

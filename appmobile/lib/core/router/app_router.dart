@@ -15,16 +15,16 @@ import '../../features/ai_diagnosis/screens/symptom_checker_screen.dart';
 import '../../main_layout.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final authState = ref.watch(authStateProvider);
+  // Optimisation : Ne surveiller que les propriétés nécessaires pour éviter les rebuilds
+  final isAuthenticated = ref.watch(authStateProvider.select((state) => state.isAuthenticated));
+  final isLoading = ref.watch(authStateProvider.select((state) => state.isLoading));
+  final hasError = ref.watch(authStateProvider.select((state) => state.error != null));
 
   return GoRouter(
-    initialLocation: authState.isAuthenticated 
+    initialLocation: isAuthenticated 
         ? AppConstants.homeRoute 
         : AppConstants.loginRoute,
     redirect: (context, state) {
-      final isAuthenticated = authState.isAuthenticated;
-      final isLoading = authState.isLoading;
-      final hasError = authState.error != null;
       final currentPath = state.uri.toString();
       final isAuthRoute = currentPath == AppConstants.loginRoute || 
                          currentPath == AppConstants.registerRoute ||
@@ -121,8 +121,8 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authStateProvider);
-    final user = authState.user;
+    // Optimisation : Ne surveiller que l'utilisateur pour éviter les rebuilds inutiles
+    final user = ref.watch(authStateProvider.select((state) => state.user));
 
     return Scaffold(
       appBar: AppBar(

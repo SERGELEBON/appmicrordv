@@ -30,9 +30,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authStateProvider);
-    final appointmentsState = ref.watch(appointmentsProvider);
-    final user = authState.user;
+    // Optimisation : Surveillance sélective pour éviter les rebuilds inutiles
+    final user = ref.watch(authStateProvider.select((state) => state.user));
+    final appointments = ref.watch(appointmentsProvider.select((state) => state.appointments));
+    final isLoadingAppointments = ref.watch(appointmentsProvider.select((state) => state.isLoading));
 
     if (user == null) {
       return const Scaffold(
@@ -42,7 +43,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     final isPatient = user.role == AppConstants.patientRole;
     final now = DateTime.now();
-    final upcomingAppointments = appointmentsState.appointments
+    final upcomingAppointments = appointments
         .where((apt) => apt.dateTime.isAfter(now) && apt.status != 'CANCELLED')
         .toList()
       ..sort((a, b) => a.dateTime.compareTo(b.dateTime));
@@ -96,7 +97,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 if (!isPatient) ...[
                   _buildSectionHeader('Aperçu de la journée'),
                   const SizedBox(height: 12),
-                  _buildDoctorStats(appointmentsState.appointments),
+                  _buildDoctorStats(appointments),
                   const SizedBox(height: 24),
                 ],
 

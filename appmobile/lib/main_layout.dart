@@ -71,8 +71,8 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authStateProvider);
-    final user = authState.user;
+    // Optimisation : Surveillance sélective pour réduire les rebuilds
+    final user = ref.watch(authStateProvider.select((state) => state.user));
 
     if (user == null) {
       return const Scaffold(

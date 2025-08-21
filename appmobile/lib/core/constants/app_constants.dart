@@ -1,11 +1,14 @@
 class AppConstants {
   static const String appName = 'RDV Chez Doc';
   
-  // API Configuration
+  // API Configuration - Pour l'émulateur Android (10.0.2.2 = localhost de l'hôte)
   static const String baseUrl = 'http://10.0.2.2:8080/api';
   static const String authServiceUrl = 'http://10.0.2.2:8080/api/auth';
   static const String rdvServiceUrl = 'http://10.0.2.2:8080/api/rdv';
   static const String chatServiceUrl = 'http://10.0.2.2:8080/api/chat';
+  
+  // Mode développement - utilise les mocks si pas de serveur backend
+  static const bool useMockData = true;
   
   // Storage Keys
   static const String tokenKey = 'auth_token';

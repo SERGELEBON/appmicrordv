@@ -3,6 +3,8 @@ import 'package:speech_to_text/speech_to_text.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import '../models/chat.dart';
 import '../services/chat_service.dart';
+import '../services/mock_service.dart';
+import '../constants/app_constants.dart';
 import 'auth_provider.dart';
 
 final chatServiceProvider = Provider<ChatService>((ref) {
@@ -144,31 +146,56 @@ class ChatNotifier extends StateNotifier<ChatState> {
     );
 
     try {
-      final request = ChatRequest(
-        message: message,
-        conversationId: state.currentConversationId,
-        context: context,
-      );
+      Map<String, dynamic> responseData;
+      
+      if (AppConstants.useMockData) {
+        responseData = await MockService.mockChatMessage(message);
+        
+        final aiMessage = ChatMessage(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          content: responseData['message'],
+          role: 'assistant',
+          timestamp: DateTime.now(),
+          metadata: responseData['aiMetadata'],
+        );
 
-      final response = await _chatService.sendMessage(request);
+        state = state.copyWith(
+          messages: [...state.messages, aiMessage],
+          currentConversationId: responseData['conversationId'],
+          isLoading: false,
+        );
 
-      final aiMessage = ChatMessage(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        content: response.message,
-        role: 'assistant',
-        timestamp: DateTime.now(),
-        metadata: response.aiMetadata,
-      );
+        // Si l'IA suggère une spécialité, on peut déclencher une action
+        if (responseData['suggestedSpecialty'] != null) {
+          _handleSpecialtySuggestion(responseData['suggestedSpecialty']!);
+        }
+      } else {
+        // Utiliser l'API réelle
+        final request = ChatRequest(
+          message: message,
+          conversationId: state.currentConversationId,
+          context: context,
+        );
 
-      state = state.copyWith(
-        messages: [...state.messages, aiMessage],
-        currentConversationId: response.conversationId,
-        isLoading: false,
-      );
+        final response = await _chatService.sendMessage(request);
 
-      // Si l'IA suggère une spécialité, on peut déclencher une action
-      if (response.suggestedSpecialty != null) {
-        _handleSpecialtySuggestion(response.suggestedSpecialty!);
+        final aiMessage = ChatMessage(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          content: response.message,
+          role: 'assistant',
+          timestamp: DateTime.now(),
+          metadata: response.aiMetadata,
+        );
+
+        state = state.copyWith(
+          messages: [...state.messages, aiMessage],
+          currentConversationId: response.conversationId,
+          isLoading: false,
+        );
+
+        if (response.suggestedSpecialty != null) {
+          _handleSpecialtySuggestion(response.suggestedSpecialty!);
+        }
       }
     } catch (e) {
       state = state.copyWith(
@@ -299,27 +326,43 @@ class SpeechNotifier extends StateNotifier<SpeechState> {
   FlutterTts? _flutterTts; // Lazy initialization
   bool _isInitializing = false;
 
-  SpeechNotifier() : super(const SpeechState());
+  SpeechNotifier() : super(const SpeechState()) {
+    // Optimisation : Initialisation asynchrone en arrière-plan
+    _initializeSpeechAsync();
+  }
+
+  // Initialisation non-bloquante en arrière-plan
+  void _initializeSpeechAsync() {
+    Future.microtask(() async {
+      try {
+        await _initializeSpeech();
+      } catch (e) {
+        // Échec silencieux - l'utilisateur peut réessayer manuellement
+        state = state.copyWith(
+          error: 'Reconnaissance vocale non disponible',
+          isLoading: false,
+        );
+      }
+    });
+  }
 
   Future<void> _initializeSpeech() async {
     if (state.isInitialized || _isInitializing) return;
     
     _isInitializing = true;
-    state = state.copyWith(isLoading: true);
     
     try {
-      // Initialiser TTS de manière asynchrone pour éviter de bloquer l'UI
-      _flutterTts ??= FlutterTts();
+      // Initialisation parallèle pour optimiser les performances
+      final List<Future> initFutures = [
+        _speechToText.initialize(),
+        _initializeTts(),
+      ];
       
-      final available = await _speechToText.initialize();
-      
-      if (_flutterTts != null) {
-        await _flutterTts!.setLanguage('fr-FR');
-        await _flutterTts!.setSpeechRate(0.5);
-      }
+      final results = await Future.wait(initFutures);
+      final speechAvailable = results[0] as bool;
       
       state = state.copyWith(
-        isInitialized: available,
+        isInitialized: speechAvailable,
         isLoading: false,
       );
     } catch (e) {
@@ -332,10 +375,27 @@ class SpeechNotifier extends StateNotifier<SpeechState> {
     }
   }
 
+  Future<void> _initializeTts() async {
+    try {
+      _flutterTts ??= FlutterTts();
+      await _flutterTts!.setLanguage('fr-FR');
+      await _flutterTts!.setSpeechRate(0.5);
+      // Configuration optimisée pour réduire la latence
+      await _flutterTts!.setPitch(1.0);
+      await _flutterTts!.setVolume(0.8);
+    } catch (e) {
+      // TTS non critique - continuer sans
+      _flutterTts = null;
+    }
+  }
+
   Future<void> startListening() async {
-    // Initialiser automatiquement si pas encore fait
-    if (!state.isInitialized) {
-      await _initializeSpeech();
+    // Vérification rapide - ne pas bloquer l'UI
+    if (!state.isInitialized && !_isInitializing) {
+      state = state.copyWith(
+        error: 'Reconnaissance vocale en cours d\'initialisation...',
+      );
+      return;
     }
     
     if (!state.isInitialized) return;
@@ -348,6 +408,8 @@ class SpeechNotifier extends StateNotifier<SpeechState> {
           state = state.copyWith(recognizedText: result.recognizedWords);
         },
         localeId: 'fr_FR',
+        listenFor: const Duration(seconds: 30), // Limite de temps
+        pauseFor: const Duration(seconds: 3),   // Pause automatique
       );
     } catch (e) {
       state = state.copyWith(
@@ -358,28 +420,35 @@ class SpeechNotifier extends StateNotifier<SpeechState> {
   }
 
   Future<void> stopListening() async {
-    await _speechToText.stop();
-    state = state.copyWith(isListening: false);
+    try {
+      await _speechToText.stop();
+    } catch (e) {
+      // Ignorer les erreurs de stop
+    } finally {
+      state = state.copyWith(isListening: false);
+    }
   }
 
   Future<void> speak(String text) async {
-    // Initialiser automatiquement si pas encore fait
-    if (!state.isInitialized) {
-      await _initializeSpeech();
+    if (_flutterTts == null) {
+      state = state.copyWith(
+        error: 'Synthèse vocale non disponible',
+      );
+      return;
     }
-    
-    if (_flutterTts == null) return;
     
     state = state.copyWith(isSpeaking: true);
     
     try {
-      await _flutterTts!.speak(text);
-      state = state.copyWith(isSpeaking: false);
+      // Optimisation : Limiter la longueur du texte pour éviter les délais
+      final truncatedText = text.length > 200 ? '${text.substring(0, 200)}...' : text;
+      await _flutterTts!.speak(truncatedText);
     } catch (e) {
       state = state.copyWith(
-        isSpeaking: false,
         error: 'Erreur lors de la synthèse vocale',
       );
+    } finally {
+      state = state.copyWith(isSpeaking: false);
     }
   }
 

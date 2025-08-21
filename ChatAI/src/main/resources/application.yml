@@ -4,9 +4,9 @@ spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/chat_ai_db}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/chat_ai_db_dev}
     username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:postgres}
+    password: ${DB_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
     hikari:
       connection-timeout: 20000
@@ -38,6 +38,15 @@ spring:
           max-active: 10
           max-idle: 5
           min-idle: 2
+  ai:
+    ollama:
+      base-url: ${OLLAMA_BASE_URL:http://ollama:11434}
+      chat:
+        options:
+          model: ${OLLAMA_MODEL:llama3}
+          temperature: ${AI_TEMPERATURE:0.7}
+          top-p: ${AI_TOP_P:0.9}
+          max-tokens: ${AI_MAX_TOKENS:2000}
 
 server:
   port: ${PORT:8082}
@@ -64,17 +73,6 @@ logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-
-spring:
-  ai:
-    ollama:
-      base-url: ${OLLAMA_BASE_URL:http://ollama:11434}
-      chat:
-        options:
-          model: ${OLLAMA_MODEL:llama3}
-          temperature: ${AI_TEMPERATURE:0.7}
-          top-p: ${AI_TOP_P:0.9}
-          max-tokens: ${AI_MAX_TOKENS:2000}
 
 app:
   auth:
