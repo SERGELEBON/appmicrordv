@@ -10,8 +10,7 @@ import 'dart:convert';
 final apiServiceProvider = Provider<ApiService>((ref) => ApiService());
 
 final authServiceProvider = Provider<AuthService>((ref) {
-  final apiService = ref.read(apiServiceProvider);
-  return AuthService(apiService.dio);
+  return AuthService();
 });
 
 final authStateProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // Couleurs principales : Orange et Bleu doux
-  static const Color primaryColor = Color(0xFFFF8A50); // Orange doux
-  static const Color secondaryColor = Color(0xFF87CEEB); // Bleu ciel doux
+  // Couleurs principales : Cartes bleues et navbar orange
+  static const Color primaryColor = Color(0xFFFF8A50); // Orange pour navbar
+  static const Color secondaryColor = Color(0xFF0000FF); // Bleu pur pour cartes
   static const Color accentColor = Color(0xFFFFB366); // Orange plus clair
-  static const Color blueAccent = Color(0xFF6BB6FF); // Bleu plus vif pour les actions
-  static const Color lightOrange = Color(0xFFFFF2E6); // Orange très clair pour les fonds
+  static const Color blueAccent = Color(0xFF0066FF); // Bleu pur plus vif pour les cartes
+  static const Color lightOrange = Color(0xFFFFE0B2); // Orange très clair pour navbar
   static const Color errorColor = Color(0xFFE74C3C);
   static const Color successColor = Color(0xFF27AE60);
   static const Color warningColor = Color(0xFFF39C12);
@@ -78,9 +78,9 @@ class AppTheme {
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: surfaceLight,
-      selectedItemColor: primaryColor,
-      unselectedItemColor: textSecondary,
+      backgroundColor: lightOrange,
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.white70,
       type: BottomNavigationBarType.fixed,
     ),
   );

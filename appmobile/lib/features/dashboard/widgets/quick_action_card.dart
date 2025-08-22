@@ -49,13 +49,13 @@ class QuickActionCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(isTabletOrDesktop ? AppTheme.spacingMd : AppTheme.spacingSm),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.15),
+                  color: color,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSm),
                 ),
                 child: Icon(
                   icon,
                   size: iconSize,
-                  color: color,
+                  color: Colors.white,
                 ),
               ),
               SizedBox(height: isTabletOrDesktop ? AppTheme.spacingMd : AppTheme.spacingSm),

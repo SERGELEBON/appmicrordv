@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_svg/flutter_svg.dart' as flutter_svg;
 import '../../../core/providers/auth_provider.dart';
 import '../../../core/providers/appointment_provider.dart';
 import '../../../core/theme/app_theme.dart';
@@ -114,42 +115,98 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Widget _buildHeader(user) {
     final greeting = _getGreeting();
+    final isDoctor = user.role == AppConstants.doctorRole;
+    final imagePath = isDoctor 
+        ? 'assets/images/doctor_header.svg' 
+        : 'assets/images/patient_header.svg';
+    
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      height: 140,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [AppTheme.primaryColor, AppTheme.accentColor],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            greeting,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: Colors.white.withOpacity(0.9),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            // Image de fond
+            flutter_svg.SvgPicture.asset(
+              imagePath,
+              fit: BoxFit.cover,
             ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '${user.role == AppConstants.doctorRole ? 'Dr. ' : ''}${user.firstName} ${user.lastName}',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+            // Overlay avec opacité pour le texte
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.black.withOpacity(0.3),
+                    Colors.transparent,
+                  ],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ),
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            DateFormat('EEEE d MMMM yyyy', 'fr_FR').format(DateTime.now()),
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.white.withOpacity(0.8),
+            // Contenu texte
+            Positioned(
+              left: 20,
+              top: 20,
+              bottom: 20,
+              right: 20,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    greeting,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 4,
+                          color: Colors.black.withOpacity(0.5),
+                          offset: const Offset(1, 1),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${isDoctor ? 'Dr. ' : ''}${user.firstName} ${user.lastName}',
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 4,
+                          color: Colors.black.withOpacity(0.5),
+                          offset: const Offset(1, 1),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    DateFormat('EEEE d MMMM yyyy', 'fr_FR').format(DateTime.now()),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.white.withOpacity(0.9),
+                      shadows: [
+                        Shadow(
+                          blurRadius: 4,
+                          color: Colors.black.withOpacity(0.5),
+                          offset: const Offset(1, 1),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -180,21 +237,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           title: 'Prendre RDV',
           subtitle: 'Nouveau rendez-vous',
           icon: Icons.calendar_today,
-          color: AppTheme.primaryColor,
+          color: AppTheme.secondaryColor,
           onTap: () => context.push('${AppConstants.appointmentsRoute}/book'),
         ),
         QuickActionCard(
           title: 'Assistant IA',
           subtitle: 'Symptômes & conseils',
           icon: Icons.smart_toy,
-          color: AppTheme.secondaryColor,
+          color: AppTheme.blueAccent,
           onTap: () => context.push(AppConstants.chatRoute),
         ),
         QuickActionCard(
           title: 'Mes RDV',
           subtitle: 'Voir l\'historique',
           icon: Icons.history,
-          color: AppTheme.accentColor,
+          color: AppTheme.secondaryColor,
           onTap: () => context.push(AppConstants.appointmentsRoute),
         ),
         QuickActionCard(
@@ -211,14 +268,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           title: 'Mes Patients',
           subtitle: 'Planning du jour',
           icon: Icons.people,
-          color: AppTheme.primaryColor,
+          color: AppTheme.secondaryColor,
           onTap: () => context.push(AppConstants.appointmentsRoute),
         ),
         QuickActionCard(
           title: 'IA Résumé',
           subtitle: 'Notes consultation',
           icon: Icons.psychology,
-          color: AppTheme.secondaryColor,
+          color: AppTheme.blueAccent,
           onTap: () => context.push('${AppConstants.chatRoute}/consultation'),
         ),
         QuickActionCard(
@@ -232,7 +289,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           title: 'Statistiques',
           subtitle: 'Analyses IA',
           icon: Icons.analytics,
-          color: AppTheme.accentColor,
+          color: AppTheme.secondaryColor,
           onTap: () => context.push('${AppConstants.profileRoute}/stats'),
         ),
       ];
@@ -247,36 +304,40 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         'content': 'Buvez au moins 1.5L d\'eau par jour pour maintenir une bonne hydratation.',
         'icon': Icons.water_drop,
         'color': AppTheme.accentColor,
+        'imagePath': 'assets/images/hydration_tip.svg',
       },
       {
         'title': 'Exercice',
         'content': '30 minutes d\'activité physique par jour réduisent les risques cardiovasculaires.',
         'icon': Icons.fitness_center,
         'color': AppTheme.successColor,
+        'imagePath': 'assets/images/exercise_tip.svg',
       },
       {
         'title': 'Sommeil',
         'content': '7-8h de sommeil par nuit améliorent votre système immunitaire.',
         'icon': Icons.bedtime,
         'color': AppTheme.primaryColor,
+        'imagePath': 'assets/images/sleep_tip.svg',
       },
     ];
 
     return SizedBox(
-      height: 140,
+      height: 160,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: tips.length,
         itemBuilder: (context, index) {
           final tip = tips[index];
           return Container(
-            width: 280,
+            width: 260,
             margin: EdgeInsets.only(right: index < tips.length - 1 ? 12 : 0),
             child: HealthTipCard(
               title: tip['title'] as String,
               content: tip['content'] as String,
               icon: tip['icon'] as IconData,
               color: tip['color'] as Color,
+              imagePath: tip['imagePath'] as String?,
             ),
           );
         },

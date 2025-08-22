@@ -126,10 +126,10 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
         onTap: (index) {
           context.go(navItems[index].route);
         },
-        selectedItemColor: AppTheme.primaryColor,
-        unselectedItemColor: AppTheme.textSecondary,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white70,
         elevation: 8,
-        backgroundColor: Theme.of(context).cardColor,
+        backgroundColor: AppTheme.lightOrange,
         items: navItems.map((item) => BottomNavigationBarItem(
           icon: Icon(item.icon),
           label: item.label,

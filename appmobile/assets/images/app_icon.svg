@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF8A50;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FF7043;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF5722;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="512" cy="512" r="480" fill="url(#iconGradient)"/>
+  
+  <!-- Medical cross -->
+  <g transform="translate(312, 312)" fill="white">
+    <!-- Vertical bar -->
+    <rect x="180" y="50" width="40" height="300" rx="20"/>
+    <!-- Horizontal bar -->
+    <rect x="50" y="180" width="300" height="40" rx="20"/>
+  </g>
+  
+  <!-- Medical symbol decorations -->
+  <g fill="white" opacity="0.8">
+    <!-- Stethoscope -->
+    <path d="M300,280 Q400,220 500,280" stroke="white" stroke-width="12" fill="none"/>
+    <circle cx="280" cy="300" r="15"/>
+    <circle cx="520" cy="300" r="15"/>
+    
+    <!-- Heart -->
+    <path d="M650,400 C650,380 670,360 700,360 C730,360 750,380 750,400 C750,420 700,480 700,480 C700,480 650,420 650,400 Z" fill="white" opacity="0.6"/>
+    
+    <!-- Plus symbols -->
+    <g transform="translate(200,600)" opacity="0.7">
+      <rect x="15" y="5" width="10" height="30" rx="5"/>
+      <rect x="5" y="15" width="30" height="10" rx="5"/>
+    </g>
+    
+    <g transform="translate(750,200)" opacity="0.7">
+      <rect x="15" y="5" width="10" height="30" rx="5"/>
+      <rect x="5" y="15" width="30" height="10" rx="5"/>
+    </g>
+  </g>
+</svg>

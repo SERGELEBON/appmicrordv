@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">
+  <defs>
+    <linearGradient id="doctorGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F3E5F5;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#E1BEE7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#CE93D8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="doctorShapeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9C27B0;stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:#6A1B9A;stop-opacity:0.2" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="200" fill="url(#doctorGradient)"/>
+  
+  <!-- Decorative circles -->
+  <circle cx="60" cy="60" r="28" fill="url(#doctorShapeGradient)"/>
+  <circle cx="340" cy="50" r="22" fill="url(#doctorShapeGradient)"/>
+  <circle cx="310" cy="150" r="35" fill="url(#doctorShapeGradient)"/>
+  
+  <!-- Stethoscope icon -->
+  <g transform="translate(280, 70)">
+    <path d="M19.48,12.35c-1.57-0.08-2.9,1.11-2.99,2.68s1.11,2.9,2.68,2.99c1.57,0.08,2.9-1.11,2.99-2.68S21.05,12.43,19.48,12.35z M16.46,9.53c-0.64-0.28-1.37,0.02-1.65,0.65L9.75,21.62c-0.28,0.63,0.02,1.37,0.65,1.65c0.63,0.28,1.37-0.02,1.65-0.65l5.06-11.44C17.39,10.55,17.09,9.81,16.46,9.53z" fill="#673AB7" opacity="0.3"/>
+  </g>
+  
+  <!-- Medical bag icon -->
+  <g transform="translate(50, 110)">
+    <rect x="2" y="6" width="20" height="14" fill="#673AB7" opacity="0.2" rx="2"/>
+    <rect x="7" y="3" width="10" height="4" fill="#673AB7" opacity="0.15" rx="1"/>
+    <rect x="9" y="10" width="2" height="6" fill="#FFFFFF" opacity="0.8"/>
+    <rect x="6" y="12" width="8" height="2" fill="#FFFFFF" opacity="0.8"/>
+  </g>
+  
+  <!-- Pulse/heartbeat line -->
+  <g transform="translate(120, 40)" opacity="0.3">
+    <path d="M0,10 L10,10 L15,5 L20,15 L25,0 L30,20 L35,10 L50,10" stroke="#673AB7" stroke-width="2" fill="none"/>
+  </g>
+  
+  <!-- DNA helix -->
+  <g transform="translate(160, 120)" opacity="0.2">
+    <path d="M0,0 Q5,5 10,0 Q15,5 20,0" stroke="#673AB7" stroke-width="2" fill="none"/>
+    <path d="M0,10 Q5,5 10,10 Q15,5 20,10" stroke="#673AB7" stroke-width="2" fill="none"/>
+    <circle cx="2" cy="0" r="1" fill="#673AB7"/>
+    <circle cx="8" cy="10" r="1" fill="#673AB7"/>
+    <circle cx="12" cy="0" r="1" fill="#673AB7"/>
+    <circle cx="18" cy="10" r="1" fill="#673AB7"/>
+  </g>
+  
+  <!-- Soft wave pattern -->
+  <path d="M0,160 Q100,140 200,160 T400,160 L400,200 L0,200 Z" fill="#FFFFFF" opacity="0.3"/>
+</svg>

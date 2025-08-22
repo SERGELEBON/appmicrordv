@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">
+  <defs>
+    <linearGradient id="patientGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E3F2FD;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#BBDEFB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#90CAF9;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="shapeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2196F3;stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:#1976D2;stop-opacity:0.2" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="200" fill="url(#patientGradient)"/>
+  
+  <!-- Decorative circles -->
+  <circle cx="50" cy="50" r="25" fill="url(#shapeGradient)"/>
+  <circle cx="350" cy="40" r="20" fill="url(#shapeGradient)"/>
+  <circle cx="320" cy="160" r="30" fill="url(#shapeGradient)"/>
+  
+  <!-- Medical cross icon -->
+  <g transform="translate(300, 80)">
+    <rect x="15" y="5" width="6" height="26" fill="#2196F3" opacity="0.3" rx="3"/>
+    <rect x="5" y="15" width="26" height="6" fill="#2196F3" opacity="0.3" rx="3"/>
+  </g>
+  
+  <!-- Heart icon -->
+  <g transform="translate(60, 120)">
+    <path d="M12,21.35l-1.45-1.32C5.4,15.36,2,12.28,2,8.5 C2,5.42,4.42,3,7.5,3c1.74,0,3.41,0.81,4.5,2.09C13.09,3.81,14.76,3,16.5,3 C19.58,3,22,5.42,22,8.5c0,3.78-3.4,6.86-8.55,11.54L12,21.35z" fill="#E91E63" opacity="0.2"/>
+  </g>
+  
+  <!-- Wellness icons -->
+  <g transform="translate(150, 30)">
+    <!-- Leaf for health -->
+    <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 7,18C8.08,18.25 9.25,18 10.25,17.5L11,19.29L12.4,18.6C16.5,16.9 18,14.11 18,11.5C18,9.89 17.5,8.5 17,8Z" fill="#4CAF50" opacity="0.15"/>
+  </g>
+  
+  <!-- Soft wave pattern -->
+  <path d="M0,150 Q100,130 200,150 T400,150 L400,200 L0,200 Z" fill="#FFFFFF" opacity="0.3"/>
+</svg>

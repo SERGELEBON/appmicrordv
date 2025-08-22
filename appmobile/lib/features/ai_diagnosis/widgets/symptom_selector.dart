@@ -16,20 +16,56 @@ class SymptomSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 8,
-      runSpacing: 8,
+      spacing: 12,
+      runSpacing: 12,
       children: symptoms.map((symptom) {
         final isSelected = selectedSymptoms.contains(symptom);
-        return FilterChip(
-          label: Text(symptom),
-          selected: isSelected,
-          onSelected: (selected) => onSymptomTap(symptom),
-          selectedColor: AppTheme.primaryColor.withOpacity(0.2),
-          checkmarkColor: AppTheme.primaryColor,
-          backgroundColor: Colors.grey[100],
-          labelStyle: TextStyle(
-            color: isSelected ? AppTheme.primaryColor : AppTheme.textPrimary,
-            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+        return InkWell(
+          onTap: () => onSymptomTap(symptom),
+          borderRadius: BorderRadius.circular(25),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            decoration: BoxDecoration(
+              color: isSelected 
+                  ? AppTheme.secondaryColor
+                  : Colors.white,
+              borderRadius: BorderRadius.circular(25),
+              border: Border.all(
+                color: isSelected 
+                    ? AppTheme.secondaryColor
+                    : Colors.grey.shade300,
+                width: 1.5,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (isSelected) ...[
+                  Icon(
+                    Icons.check_circle,
+                    size: 16,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(width: 6),
+                ],
+                Text(
+                  symptom,
+                  style: TextStyle(
+                    color: isSelected ? Colors.white : AppTheme.textPrimary,
+                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       }).toList(),

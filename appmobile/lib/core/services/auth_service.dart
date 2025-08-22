@@ -1,38 +1,107 @@
-import 'package:retrofit/retrofit.dart';
-import 'package:dio/dio.dart';
 import '../models/user.dart';
-import '../constants/app_constants.dart';
 
-part 'auth_service.g.dart';
+class AuthService {
+  
+  Future<AuthResponse> login(LoginRequest request) async {
+    // Simulation d'une connexion réussie
+    await Future.delayed(const Duration(seconds: 1));
+    
+    return const AuthResponse(
+      accessToken: 'fake_access_token',
+      refreshToken: 'fake_refresh_token',
+      user: User(
+        id: 1,
+        email: 'test@example.com',
+        firstName: 'John',
+        lastName: 'Doe',
+        role: 'patient',
+      ),
+    );
+  }
 
-@RestApi(baseUrl: AppConstants.baseUrl)
-abstract class AuthService {
-  factory AuthService(Dio dio, {String baseUrl}) = _AuthService;
+  Future<AuthResponse> register(RegisterRequest request) async {
+    await Future.delayed(const Duration(seconds: 1));
+    
+    return AuthResponse(
+      accessToken: 'fake_access_token',
+      refreshToken: 'fake_refresh_token',
+      user: User(
+        id: 2,
+        email: request.email,
+        firstName: request.firstName,
+        lastName: request.lastName,
+        role: request.role,
+      ),
+    );
+  }
 
-  @POST('/auth/login')
-  Future<AuthResponse> login(@Body() LoginRequest request);
+  Future<AuthResponse> refreshToken(Map<String, String> refreshToken) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    
+    return const AuthResponse(
+      accessToken: 'new_fake_access_token',
+      refreshToken: 'new_fake_refresh_token',
+      user: User(
+        id: 1,
+        email: 'test@example.com',
+        firstName: 'John',
+        lastName: 'Doe',
+        role: 'patient',
+      ),
+    );
+  }
 
-  @POST('/auth/register')
-  Future<AuthResponse> register(@Body() RegisterRequest request);
+  Future<void> logout() async {
+    await Future.delayed(const Duration(milliseconds: 500));
+  }
 
-  @POST('/auth/refresh')
-  Future<AuthResponse> refreshToken(@Body() Map<String, String> refreshToken);
+  Future<User> getProfile() async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    
+    return const User(
+      id: 1,
+      email: 'test@example.com',
+      firstName: 'John',
+      lastName: 'Doe',
+      role: 'patient',
+      phone: '+33123456789',
+    );
+  }
 
-  @POST('/auth/logout')
-  Future<void> logout();
+  Future<User> updateProfile(Map<String, dynamic> userData) async {
+    await Future.delayed(const Duration(seconds: 1));
+    
+    return User(
+      id: 1,
+      email: userData['email'] ?? 'test@example.com',
+      firstName: userData['firstName'] ?? 'John',
+      lastName: userData['lastName'] ?? 'Doe',
+      role: 'patient',
+      phone: userData['phone'],
+    );
+  }
 
-  @GET('/auth/profile')
-  Future<User> getProfile();
+  Future<void> forgotPassword(Map<String, String> email) async {
+    await Future.delayed(const Duration(seconds: 1));
+  }
 
-  @PUT('/auth/profile')
-  Future<User> updateProfile(@Body() Map<String, dynamic> userData);
+  Future<void> resetPassword(Map<String, String> resetData) async {
+    await Future.delayed(const Duration(seconds: 1));
+  }
 
-  @POST('/auth/forgot-password')
-  Future<void> forgotPassword(@Body() Map<String, String> email);
-
-  @POST('/auth/reset-password')
-  Future<void> resetPassword(@Body() Map<String, String> resetData);
-
-  @POST('/auth/verify-email')
-  Future<AuthResponse> verifyEmail(@Body() Map<String, String> verificationData);
+  Future<AuthResponse> verifyEmail(Map<String, String> verificationData) async {
+    await Future.delayed(const Duration(seconds: 1));
+    
+    return const AuthResponse(
+      accessToken: 'verified_access_token',
+      refreshToken: 'verified_refresh_token',
+      user: User(
+        id: 1,
+        email: 'test@example.com',
+        firstName: 'John',
+        lastName: 'Doe',
+        role: 'patient',
+      ),
+    );
+  }
 }
