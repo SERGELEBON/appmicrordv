@@ -5,6 +5,7 @@ import 'core/constants/app_constants.dart';
 import 'core/providers/auth_provider.dart';
 import 'core/theme/app_theme.dart';
 import 'core/utils/responsive_utils.dart';
+import 'shared/widgets/top_navigation_bar.dart';
 
 class MainLayout extends ConsumerStatefulWidget {
   final Widget child;
@@ -119,6 +120,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
 
     // Utiliser BottomNavigationBar pour mobile
     return Scaffold(
+      appBar: const TopNavigationBar(),
       body: widget.child,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -127,9 +129,9 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
           context.go(navItems[index].route);
         },
         selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white70,
+        unselectedItemColor: Colors.white.withOpacity(0.7),
         elevation: 8,
-        backgroundColor: AppTheme.lightOrange,
+        backgroundColor: AppTheme.secondaryColor, // Bleu pur
         items: navItems.map((item) => BottomNavigationBarItem(
           icon: Icon(item.icon),
           label: item.label,

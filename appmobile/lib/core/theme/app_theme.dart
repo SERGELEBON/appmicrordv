@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // Couleurs principales : Cartes bleues et navbar orange
-  static const Color primaryColor = Color(0xFFFF8A50); // Orange pour navbar
-  static const Color secondaryColor = Color(0xFF0000FF); // Bleu pur pour cartes
-  static const Color accentColor = Color(0xFFFFB366); // Orange plus clair
-  static const Color blueAccent = Color(0xFF0066FF); // Bleu pur plus vif pour les cartes
-  static const Color lightOrange = Color(0xFFFFE0B2); // Orange très clair pour navbar
+  // Couleurs principales : Bleu harmonieux pour toutes les navbars
+  static const Color primaryColor = Color(0xFF4A90E2); // Bleu principal harmonieux
+  static const Color secondaryColor = Color(0xFF4A90E2); // Même bleu pour cohérence
+  static const Color accentColor = Color(0xFF6BA3E8); // Bleu plus clair
+  static const Color blueAccent = Color(0xFF357ABD); // Bleu plus foncé pour contraste
+  static const Color lightBlue = Color(0xFFE3F2FD); // Bleu très clair
+  static const Color lightOrange = Color(0xFFE3F2FD); // Alias pour compatibilité
   static const Color errorColor = Color(0xFFE74C3C);
   static const Color successColor = Color(0xFF27AE60);
   static const Color warningColor = Color(0xFFF39C12);
   
-  static const Color backgroundLight = Color(0xFFFFF8F3); // Fond très léger orange
+  static const Color backgroundLight = Color(0xFFF8FBFF); // Fond très léger bleu
   static const Color backgroundDark = Color(0xFF1A1A1A);
   static const Color surfaceLight = Colors.white;
   static const Color surfaceDark = Color(0xFF2D2D2D);
@@ -78,7 +79,7 @@ class AppTheme {
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: lightOrange,
+      backgroundColor: secondaryColor,
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.white70,
       type: BottomNavigationBarType.fixed,

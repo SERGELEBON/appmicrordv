@@ -139,43 +139,28 @@ class _AIChatScreenState extends ConsumerState<AIChatScreen> {
                 ),
               ),
 
-            // Zone de saisie
+            // Zone de saisie professionnelle
             Container(
-              constraints: BoxConstraints(
-                maxWidth: ResponsiveUtils.getMaxContentWidth(context),
-              ),
-              padding: ResponsiveUtils.getResponsivePadding(context),
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
+                color: Theme.of(context).scaffoldBackgroundColor,
+                border: Border(
+                  top: BorderSide(
+                    color: AppTheme.textSecondary.withOpacity(0.2),
+                    width: 1,
+                  ),
+                ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, -2),
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 12,
+                    offset: const Offset(0, -4),
                   ),
                 ],
               ),
               child: SafeArea(
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    final isWideScreen = constraints.maxWidth > 600;
-                    
-                    if (isWideScreen) {
-                      return Row(
-                        children: _buildInputWidgets(),
-                      );
-                    } else {
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Row(
-                            children: _buildInputWidgets(),
-                          ),
-                        ],
-                      );
-                    }
-                  },
-                ),
+                child: _buildInputSection(),
               ),
             ),
           ],
@@ -184,48 +169,128 @@ class _AIChatScreenState extends ConsumerState<AIChatScreen> {
     );
   }
 
-  List<Widget> _buildInputWidgets() {
-    return [
-      // Bouton microphone
-      VoiceInputWidget(
-        onTextRecognized: (text) {
-          _messageController.text = text;
-        },
-      ),
-      SizedBox(width: AppTheme.spacingSm),
-      
-      // Champ de texte
-      Expanded(
-        child: TextField(
-          controller: _messageController,
-          decoration: InputDecoration(
-            hintText: 'Décrivez vos symptômes...',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+  Widget _buildInputSection() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Zone de saisie principale
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: AppTheme.textSecondary.withOpacity(0.3),
+              width: 1,
             ),
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: AppTheme.spacingMd,
-              vertical: AppTheme.spacingMd,
-            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
-          maxLines: null,
-          textInputAction: TextInputAction.send,
-          onSubmitted: _sendMessage,
+          child: Row(
+            children: [
+              // Bouton microphone
+              Padding(
+                padding: const EdgeInsets.only(left: 4),
+                child: VoiceInputWidget(
+                  onTextRecognized: (text) {
+                    _messageController.text = text;
+                  },
+                ),
+              ),
+              
+              // Champ de texte étendu
+              Expanded(
+                child: TextField(
+                  controller: _messageController,
+                  decoration: const InputDecoration(
+                    hintText: 'Décrivez vos symptômes ou posez votre question...',
+                    hintStyle: TextStyle(
+                      color: AppTheme.textSecondary,
+                      fontSize: 16,
+                    ),
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
+                  ),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: AppTheme.textPrimary,
+                  ),
+                  maxLines: 4,
+                  minLines: 1,
+                  textInputAction: TextInputAction.send,
+                  onSubmitted: _sendMessage,
+                ),
+              ),
+              
+              // Bouton d'envoi moderne
+              Padding(
+                padding: const EdgeInsets.only(right: 4),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppTheme.secondaryColor,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: IconButton(
+                    onPressed: () => _sendMessage(_messageController.text),
+                    icon: const Icon(Icons.send_rounded),
+                    style: IconButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.all(12),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        
+        // Barre d'actions rapides (optionnelle)
+        const SizedBox(height: 12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildQuickActionChip('🤒 Fièvre', () => _sendMessage('J\'ai de la fièvre')),
+            const SizedBox(width: 8),
+            _buildQuickActionChip('😷 Toux', () => _sendMessage('J\'ai une toux')),
+            const SizedBox(width: 8),
+            _buildQuickActionChip('🤕 Mal de tête', () => _sendMessage('J\'ai mal à la tête')),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildQuickActionChip(String text, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: AppTheme.secondaryColor.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: AppTheme.secondaryColor.withOpacity(0.3),
+            width: 1,
+          ),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: AppTheme.secondaryColor,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
-      SizedBox(width: AppTheme.spacingSm),
-      
-      // Bouton d'envoi
-      IconButton(
-        onPressed: () => _sendMessage(_messageController.text),
-        icon: const Icon(Icons.send),
-        style: IconButton.styleFrom(
-          backgroundColor: AppTheme.primaryColor,
-          foregroundColor: Colors.white,
-          padding: EdgeInsets.all(AppTheme.spacingMd),
-        ),
-      ),
-    ];
+    );
   }
 
   Widget _buildWelcomeCard() {

@@ -113,6 +113,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
+
   Widget _buildHeader(user) {
     final greeting = _getGreeting();
     final isDoctor = user.role == AppConstants.doctorRole;
@@ -471,6 +472,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     if (hour < 18) return 'Bon après-midi';
     return 'Bonsoir';
   }
+
 
   void _showEmergencyDialog() {
     showDialog(

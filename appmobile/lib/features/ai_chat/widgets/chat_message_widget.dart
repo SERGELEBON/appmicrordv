@@ -41,49 +41,52 @@ class ChatMessageWidget extends ConsumerWidget {
         ],
         
         Flexible(
-          child: Container(
+          child: ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: ResponsiveUtils.getScreenWidth(context) * 
-                (ResponsiveUtils.isDesktop(context) ? 0.6 : 0.8),
+                (ResponsiveUtils.isDesktop(context) ? 0.6 : 0.75),
+              minWidth: 120,
             ),
-            padding: EdgeInsets.all(ResponsiveUtils.isDesktop(context) ? AppTheme.spacingMd : AppTheme.spacingMd),
-            decoration: BoxDecoration(
-              color: isUser ? AppTheme.primaryColor : Colors.grey[100],
-              borderRadius: BorderRadius.circular(AppTheme.radiusLg).copyWith(
-                bottomLeft: isUser ? Radius.circular(AppTheme.radiusLg) : Radius.circular(AppTheme.spacingXs),
-                bottomRight: isUser ? Radius.circular(AppTheme.spacingXs) : Radius.circular(AppTheme.radiusLg),
+            child: Container(
+              padding: EdgeInsets.all(ResponsiveUtils.isDesktop(context) ? AppTheme.spacingMd : AppTheme.spacingMd),
+              decoration: BoxDecoration(
+                color: isUser ? AppTheme.primaryColor : Colors.grey[100],
+                borderRadius: BorderRadius.circular(AppTheme.radiusLg).copyWith(
+                  bottomLeft: isUser ? Radius.circular(AppTheme.radiusLg) : Radius.circular(AppTheme.spacingXs),
+                  bottomRight: isUser ? Radius.circular(AppTheme.spacingXs) : Radius.circular(AppTheme.radiusLg),
+                ),
               ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Contenu du message
-                Text(
-                  message.content,
-                  style: TextStyle(
-                    color: isUser ? Colors.white : AppTheme.textPrimary,
-                    fontSize: 16,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Contenu du message
+                  Text(
+                    message.content,
+                    style: TextStyle(
+                      color: isUser ? Colors.white : AppTheme.textPrimary,
+                      fontSize: 16,
+                    ),
                   ),
-                ),
-                
-                // Actions spéciales pour les suggestions IA
-                if (!isUser && message.type == 'suggestion') ...[
-                  const SizedBox(height: 12),
-                  _buildSuggestionActions(context, ref),
+                  
+                  // Actions spéciales pour les suggestions IA
+                  if (!isUser && message.type == 'suggestion') ...[
+                    const SizedBox(height: 12),
+                    _buildSuggestionActions(context, ref),
+                  ],
+                  
+                  // Heure
+                  const SizedBox(height: 4),
+                  Text(
+                    timeFormat.format(message.timestamp),
+                    style: TextStyle(
+                      color: isUser 
+                          ? Colors.white.withOpacity(0.7) 
+                          : AppTheme.textSecondary,
+                      fontSize: 12,
+                    ),
+                  ),
                 ],
-                
-                // Heure
-                const SizedBox(height: 4),
-                Text(
-                  timeFormat.format(message.timestamp),
-                  style: TextStyle(
-                    color: isUser 
-                        ? Colors.white.withOpacity(0.7) 
-                        : AppTheme.textSecondary,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ),
@@ -120,21 +123,29 @@ class ChatMessageWidget extends ConsumerWidget {
                   }
                 },
                 icon: const Icon(Icons.calendar_today, size: 16),
-                label: const Text('Prendre RDV'),
+                label: const Text(
+                  'Prendre RDV',
+                  overflow: TextOverflow.ellipsis,
+                ),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppTheme.primaryColor,
                   side: const BorderSide(color: AppTheme.primaryColor),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 ),
               ),
             ),
             const SizedBox(width: 8),
-            IconButton(
-              onPressed: () {
-                ref.read(speechProvider.notifier).speak(message.content);
-              },
-              icon: const Icon(Icons.volume_up, size: 16),
-              style: IconButton.styleFrom(
-                foregroundColor: AppTheme.primaryColor,
+            Container(
+              constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
+              child: IconButton(
+                onPressed: () {
+                  ref.read(speechProvider.notifier).speak(message.content);
+                },
+                icon: const Icon(Icons.volume_up, size: 16),
+                style: IconButton.styleFrom(
+                  foregroundColor: AppTheme.primaryColor,
+                  padding: const EdgeInsets.all(8),
+                ),
               ),
             ),
           ],
@@ -157,12 +168,16 @@ class ChatMessageWidget extends ConsumerWidget {
                   color: AppTheme.primaryColor,
                 ),
                 const SizedBox(width: 8),
-                Text(
-                  'Spécialité recommandée: $suggestedSpecialty',
-                  style: const TextStyle(
-                    color: AppTheme.primaryColor,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12,
+                Expanded(
+                  child: Text(
+                    'Spécialité recommandée: $suggestedSpecialty',
+                    style: const TextStyle(
+                      color: AppTheme.primaryColor,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                   ),
                 ),
               ],

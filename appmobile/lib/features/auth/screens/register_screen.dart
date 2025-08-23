@@ -31,6 +31,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   String? _selectedSpecialty;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+  bool _acceptTerms = false;
 
   @override
   void initState() {
@@ -133,7 +134,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         return _emailController.text.trim().isNotEmpty && 
                RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(_emailController.text.trim()) &&
                _passwordController.text.length >= 6 &&
-               _passwordController.text == _confirmPasswordController.text;
+               _passwordController.text == _confirmPasswordController.text &&
+               _acceptTerms;
       default:
         return false;
     }
@@ -727,6 +729,85 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
         const SizedBox(height: 24),
 
+        // Case à cocher pour les conditions d'utilisation
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.grey[50],
+            borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+            border: Border.all(
+              color: Colors.grey[300]!,
+              width: 1,
+            ),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Checkbox(
+                value: _acceptTerms,
+                onChanged: (value) {
+                  setState(() {
+                    _acceptTerms = value ?? false;
+                  });
+                },
+                activeColor: AppTheme.secondaryColor,
+              ),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _acceptTerms = !_acceptTerms;
+                    });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: RichText(
+                      text: TextSpan(
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          height: 1.4,
+                        ),
+                        children: [
+                          const TextSpan(text: 'J\'accepte les '),
+                          WidgetSpan(
+                            child: GestureDetector(
+                              onTap: () => _showTermsOfService(),
+                              child: Text(
+                                'conditions d\'utilisation',
+                                style: TextStyle(
+                                  color: AppTheme.secondaryColor,
+                                  fontWeight: FontWeight.w600,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const TextSpan(text: ' et la '),
+                          WidgetSpan(
+                            child: GestureDetector(
+                              onTap: () => _showPrivacyPolicy(),
+                              child: Text(
+                                'politique de confidentialité',
+                                style: TextStyle(
+                                  color: AppTheme.secondaryColor,
+                                  fontWeight: FontWeight.w600,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const TextSpan(text: ' de RDV Chez Doc.'),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 24),
+
         // Résumé du compte
         Container(
           padding: const EdgeInsets.all(16),
@@ -762,6 +843,60 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  void _showTermsOfService() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Conditions d\'utilisation'),
+        content: const SingleChildScrollView(
+          child: Text(
+            'En utilisant RDV Chez Doc, vous acceptez les conditions suivantes :\n\n'
+            '1. Vous utilisez cette application à des fins médicales légitimes\n'
+            '2. Vous fournirez des informations exactes et à jour\n'
+            '3. Vous respecterez la confidentialité des autres utilisateurs\n'
+            '4. Vous ne partagerez pas vos identifiants de connexion\n'
+            '5. En cas d\'urgence, vous contacterez directement les services d\'urgence\n\n'
+            'Ces conditions peuvent être mises à jour à tout moment.',
+            style: TextStyle(height: 1.5),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fermer'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showPrivacyPolicy() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Politique de confidentialité'),
+        content: const SingleChildScrollView(
+          child: Text(
+            'RDV Chez Doc s\'engage à protéger vos données personnelles :\n\n'
+            '• Vos données médicales sont cryptées et sécurisées\n'
+            '• Nous ne partageons jamais vos informations sans votre consentement\n'
+            '• Vous pouvez demander la suppression de vos données à tout moment\n'
+            '• Nous utilisons des cookies pour améliorer votre expérience\n'
+            '• Vos données sont stockées conformément au RGPD\n\n'
+            'Pour plus d\'informations, contactez notre équipe de support.',
+            style: TextStyle(height: 1.5),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fermer'),
+          ),
+        ],
+      ),
     );
   }
 }

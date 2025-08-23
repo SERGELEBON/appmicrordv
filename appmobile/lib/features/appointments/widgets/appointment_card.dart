@@ -192,31 +192,74 @@ class AppointmentCard extends StatelessWidget {
             // Actions pour les rendez-vous à venir
             if (type == 'upcoming' && appointment.status != 'CANCELLED') ...[
               const SizedBox(height: 16),
-              Row(
-                children: [
-                  if (onReschedule != null)
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: onReschedule,
-                        icon: const Icon(Icons.schedule),
-                        label: const Text('Reprogrammer'),
-                      ),
-                    ),
-                  if (onReschedule != null && onCancel != null)
-                    const SizedBox(width: 12),
-                  if (onCancel != null)
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: onCancel,
-                        icon: const Icon(Icons.cancel),
-                        label: const Text('Annuler'),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: AppTheme.errorColor,
-                          side: const BorderSide(color: AppTheme.errorColor),
+              SizedBox(
+                height: 44, // Hauteur fixe pour tous les boutons
+                child: Row(
+                  children: [
+                    if (onReschedule != null)
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: onReschedule,
+                          icon: const Icon(Icons.schedule, size: 16),
+                          label: const FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              'Reprogrammer',
+                              style: TextStyle(fontSize: 12),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              softWrap: false,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.successColor,
+                            foregroundColor: Colors.white,
+                            elevation: 2,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 8,
+                            ),
+                            minimumSize: const Size(0, 44),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                ],
+                    if (onReschedule != null && onCancel != null)
+                      const SizedBox(width: 12),
+                    if (onCancel != null)
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: onCancel,
+                          icon: const Icon(Icons.cancel, size: 16),
+                          label: const FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              'Annuler',
+                              style: TextStyle(fontSize: 12),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              softWrap: false,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.errorColor,
+                            foregroundColor: Colors.white,
+                            elevation: 2,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 8,
+                            ),
+                            minimumSize: const Size(0, 44),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ],
           ],

@@ -62,144 +62,179 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mot de passe oublié'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go(AppConstants.loginRoute),
+      backgroundColor: AppTheme.backgroundLight,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppTheme.backgroundLight,
+              Colors.white,
+              AppTheme.lightBlue,
+            ],
+          ),
         ),
-      ),
-      body: SafeScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: _emailSent ? _buildSuccessView() : _buildFormView(),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24.0),
+            child: _emailSent ? _buildSuccessView() : _buildFormView(),
+          ),
         ),
       ),
     );
   }
 
   Widget _buildFormView() {
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Icône et titre
-          Center(
-            child: Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                color: AppTheme.lightOrange,
-                borderRadius: BorderRadius.circular(40),
-              ),
-              child: const Icon(
-                Icons.lock_reset,
-                size: 40,
-                color: AppTheme.primaryColor,
-              ),
-            ),
+    return Center(
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 400),
+        padding: const EdgeInsets.all(32.0),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.95),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: AppTheme.secondaryColor.withOpacity(0.2),
+            width: 1,
           ),
-          const SizedBox(height: 32),
-          
-          Text(
-            'Réinitialiser votre mot de passe',
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: AppTheme.primaryColor,
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.secondaryColor.withOpacity(0.1),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: AppTheme.textSecondary,
-            ),
-          ),
-          const SizedBox(height: 32),
-          
-          // Champ email
-          TextFormField(
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            enabled: !_isLoading,
-            decoration: InputDecoration(
-              labelText: 'Adresse email',
-              hintText: 'votre.email@example.com',
-              prefixIcon: const Icon(Icons.email_outlined),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-                borderSide: const BorderSide(color: AppTheme.secondaryColor),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-                borderSide: const BorderSide(color: AppTheme.secondaryColor),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-                borderSide: const BorderSide(color: AppTheme.primaryColor, width: 2),
-              ),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Veuillez entrer votre email';
-              }
-              if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                return 'Veuillez entrer un email valide';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 32),
-          
-          // Bouton envoyer
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: _isLoading ? null : _resetPassword,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.primaryColor,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+          ],
+        ),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Icône et titre
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: AppTheme.secondaryColor,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                elevation: 2,
+                child: const Icon(
+                  Icons.lock_reset,
+                  size: 40,
+                  color: Colors.white,
+                ),
               ),
-              child: _isLoading
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      ),
-                    )
-                  : const Text(
-                      'Envoyer le lien de réinitialisation',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+              const SizedBox(height: 24),
+              
+              Text(
+                'Mot de passe oublié ?',
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.primaryColor,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppTheme.textSecondary,
+                  height: 1.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 32),
+          
+              // Champ email
+              TextFormField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                enabled: !_isLoading,
+                style: TextStyle(color: AppTheme.textPrimary, fontSize: 16),
+                decoration: InputDecoration(
+                  hintText: 'Adresse email',
+                  hintStyle: TextStyle(color: AppTheme.textSecondary),
+                  filled: true,
+                  fillColor: AppTheme.lightBlue.withOpacity(0.1),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: AppTheme.secondaryColor.withOpacity(0.3)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: AppTheme.secondaryColor.withOpacity(0.3)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: AppTheme.secondaryColor, width: 2),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 16,
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Veuillez entrer votre email';
+                  }
+                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                    return 'Veuillez entrer un email valide';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 24),
+              
+              // Bouton envoyer
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _resetPassword,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.primaryColor,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
-            ),
-          ),
-          const SizedBox(height: 24),
-          
-          // Retour à la connexion
-          Center(
-            child: TextButton(
-              onPressed: () => context.go(AppConstants.loginRoute),
-              child: Text(
-                'Retour à la connexion',
-                style: TextStyle(
-                  color: AppTheme.blueAccent,
-                  fontWeight: FontWeight.w500,
+                    elevation: 3,
+                  ),
+                  child: _isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        )
+                      : const Text(
+                          'Envoyer le lien',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                 ),
               ),
-            ),
+              const SizedBox(height: 16),
+              
+              // Retour à la connexion
+              Center(
+                child: TextButton(
+                  onPressed: () => context.go(AppConstants.loginRoute),
+                  child: Text(
+                    'Retour à la connexion',
+                    style: TextStyle(
+                      color: AppTheme.secondaryColor,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

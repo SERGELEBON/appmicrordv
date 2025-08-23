@@ -74,6 +74,18 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen>
         title: const Text('Mes Rendez-vous'),
         bottom: TabBar(
           controller: _tabController,
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white.withOpacity(0.7),
+          indicatorColor: Colors.white,
+          indicatorWeight: 3,
+          labelStyle: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+          ),
+          unselectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 14,
+          ),
           tabs: const [
             Tab(text: 'À venir'),
             Tab(text: 'Passés'),
