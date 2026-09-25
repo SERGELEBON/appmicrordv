@@ -37,3 +37,37 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# --- Security & hygiene (standard) ---
+# Environment / secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+!.env.sample
+!.env.*.template
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+
+# IDE / editor
+.idea/
+*.swp
+
+# OS
+Thumbs.db
+
+# Dependencies
+node_modules/
+
+# Build / caches
+.gradle/
+.vercel/
+.netlify/
+.expo/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
